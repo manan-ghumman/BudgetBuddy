@@ -14,3 +14,6 @@ debug_log*.txt
 # OS files
 .DS_Store
 Thumbs.db
+
+# Secrets
+budget-buddy-backend/src/main/resources/application.properties

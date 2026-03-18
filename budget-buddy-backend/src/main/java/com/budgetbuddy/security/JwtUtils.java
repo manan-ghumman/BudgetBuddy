@@ -22,43 +22,52 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private int jwtExpirationMs;
 
-    public String generateJwtToken(Au
-        UserDetails userPrincipal = (
-        
-            rn Jwts.builder()
-                .subject((userPrincipal.getUsername()))
+    @jakarta.annotation.PostConstruct
+    public void validateJwtSecret() {
+        if (jwtSecret == null || jwtSecret.trim().isEmpty()) {
+            logger.warn("WARNING: JWT secret is not set. Please set JWT_SECRET environment variable.");
+        } else if (jwtSecret.contains("DefaultDevSecret")) {
+            logger.warn("WARNING: Using default development JWT secret. Set JWT_SECRET env var for production.");
+        } else if (jwtSecret.length() < 32) {
+            logger.warn("WARNING: JWT secret is shorter than 32 characters. Use a longer secret for production.");
+        }
+    }
+
+    public String generateJwtToken(Authentication authentication) {
+        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
+
+        return Jwts.builder()
+                .subject(userPrincipal.getUsername())
                 .issuedAt(new Date())
-                .expiration(new Date((new Dat
+                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key())
-         
+                .compact();
     }
 
     private Key key() {
-        // Use raw bytes from the secret string for better reliability with diff
+        return Keys.hmacShaKeyFor(jwtSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+    }
 
-        return Keys.hmacShaKe
-                
-                
-                g getUserNameFromJwtToken(String token) {
-                wts.parser()
-                .verifyWith
-     
-
-                .getPay
+    public String getUserNameFromJwtToken(String token) {
+        return Jwts.parser()
+                .verifyWith((javax.crypto.SecretKey) key())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
                 .getSubject();
-        
-        
-    p
+    }
 
+    public boolean validateJwtToken(String authToken) {
+        try {
             Jwts.parser()
-                    .verifyW
+                    .verifyWith((javax.crypto.SecretKey) key())
                     .build()
-                    .par
-                rn true;
-                (MalformedJwt
-                er.error("Inva
-     
-
+                    .parseSignedClaims(authToken);
+            return true;
+        } catch (MalformedJwtException e) {
+            logger.error("Invalid JWT token: {}", e.getMessage());
+        } catch (ExpiredJwtException e) {
+            logger.error("JWT token is expired: {}", e.getMessage());
         } catch (UnsupportedJwtException e) {
             logger.error("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {

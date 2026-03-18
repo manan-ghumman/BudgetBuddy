@@ -100,7 +100,7 @@ const BudgetTracker = () => {
                             </select>
                         </div>
                         <div style={{ flex: 1 }}>
-                            <label className="y2k-label">Monthly Limit ($)</label>
+                            <label className="y2k-label">Monthly Limit (₹)</label>
                             <input 
                                 required 
                                 type="number" 
@@ -137,7 +137,7 @@ const BudgetTracker = () => {
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1.25rem', fontWeight: '900' }}>{budget.category}</h3>
                                 <p style={{ margin: 0, color: 'var(--dark-grey)', fontFamily: 'var(--font-mono)', fontSize: '0.875rem' }}>
-                                    Monthly Limit: <strong>${budget.monthlyLimit.toFixed(2)}</strong>
+                                    Monthly Limit: <strong>₹{budget.monthlyLimit.toFixed(2)}</strong>
                                 </p>
                             </div>
                         </div>

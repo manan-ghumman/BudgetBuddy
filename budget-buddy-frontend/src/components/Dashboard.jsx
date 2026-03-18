@@ -8,7 +8,15 @@ import expenseService from '../services/expenseService';
 import budgetService from '../services/budgetService';
 import incomeService from '../services/incomeService';
 
-const PIE_COLORS = ['#cdff00', '#ff00ff', '#00ffff', '#111111'];
+const CATEGORY_COLORS = {
+    'Food': 'var(--lima-green)',
+    'Fun': 'var(--hot-pink)',
+    'Housing': 'var(--electric-blue)',
+    'Transport': 'var(--neon-orange)',
+    'Other': 'var(--neon-purple)'
+};
+
+const PIE_COLORS = Object.values(CATEGORY_COLORS);
 
 const Dashboard = () => {
     const navigate = useNavigate();
@@ -106,7 +114,7 @@ const Dashboard = () => {
                         <div>
                             <p className="y2k-label">Current Balance</p>
                             <div style={{ fontSize: '2.5rem', fontWeight: '900', color: 'var(--black)' }}>
-                                ${((stats?.totalMonthlyIncome || 0) - (stats?.totalMonthlySpending || 0)).toFixed(2)}
+                                ₹{((stats?.totalMonthlyIncome || 0) - (stats?.totalMonthlySpending || 0)).toFixed(2)}
                             </div>
                         </div>
                         <CreditCard color="var(--dark-grey)" size={28} />
@@ -117,7 +125,7 @@ const Dashboard = () => {
                         <div>
                             <p className="y2k-label">Total Income</p>
                             <div style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--black)', display: 'flex', alignItems: 'center' }}>
-                              ${(stats?.totalMonthlyIncome || 0).toFixed(2)} <ArrowUpRight color="var(--lima-green)" size={24} style={{ marginLeft: '8px' }}/>
+                              ₹{(stats?.totalMonthlyIncome || 0).toFixed(2)} <ArrowUpRight color="var(--lima-green)" size={24} style={{ marginLeft: '8px' }}/>
                             </div>
                         </div>
                     </div>
@@ -127,7 +135,7 @@ const Dashboard = () => {
                         <div>
                             <p className="y2k-label">Total Spent</p>
                             <div style={{ fontSize: '2rem', fontWeight: '900', color: 'var(--black)', display: 'flex', alignItems: 'center' }}>
-                              ${(stats?.totalMonthlySpending || 0).toFixed(2)} <ArrowDownRight color="var(--hot-pink)" size={24} style={{ marginLeft: '8px' }}/>
+                              ₹{(stats?.totalMonthlySpending || 0).toFixed(2)} <ArrowDownRight color="var(--hot-pink)" size={24} style={{ marginLeft: '8px' }}/>
                             </div>
                         </div>
                     </div>
@@ -209,7 +217,7 @@ const Dashboard = () => {
                             <div key={index} style={{ marginBottom: '2rem' }}>
                                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem', fontWeight: '800' }}>
                                     <span>{budget.category}</span>
-                                    <span style={{ fontFamily: 'var(--font-mono)' }}>${spent.toFixed(2)} / ${budget.monthlyLimit.toFixed(2)}</span>
+                                    <span style={{ fontFamily: 'var(--font-mono)' }}>₹{spent.toFixed(2)} / ₹{budget.monthlyLimit.toFixed(2)}</span>
                                 </div>
                                 <div style={{ width: '100%', height: '16px', backgroundColor: 'var(--light-grey)', borderRadius: '999px', overflow: 'hidden', border: '2px solid var(--black)' }}>
                                     <div style={{ 
@@ -251,7 +259,7 @@ const Dashboard = () => {
                             >
                                 <div>
                                     <div style={{ fontWeight: '800', fontSize: '1.1rem', marginBottom: '0.25rem' }}>{t.description}</div>
-                                    <span className="y2k-badge" style={{ backgroundColor: t.type === 'income' ? 'var(--lima-green)' : PIE_COLORS[i % PIE_COLORS.length], fontSize: '0.65rem', padding: '0.15rem 0.5rem' }}>
+                                    <span className="y2k-badge" style={{ backgroundColor: t.type === 'income' ? 'var(--lima-green)' : (CATEGORY_COLORS[t.category] || 'var(--light-grey)'), fontSize: '0.65rem', padding: '0.15rem 0.5rem' }}>
                                       {t.type === 'income' ? 'INCOME' : t.category}
                                     </span>
                                 </div>
@@ -261,7 +269,7 @@ const Dashboard = () => {
                                     fontSize: '1.25rem', 
                                     color: t.type === 'income' ? 'var(--lima-green)' : 'var(--error)' 
                                 }}>
-                                  {t.type === 'income' ? '+' : '-'}${t.amount.toFixed(2)}
+                                  {t.type === 'income' ? '+' : '-'}₹{t.amount.toFixed(2)}
                                 </div>
                             </div>
                         )) : (

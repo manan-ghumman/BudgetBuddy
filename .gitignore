@@ -16,4 +16,8 @@ debug_log*.txt
 Thumbs.db
 
 # Secrets
-budget-buddy-backend/src/main/resources/application.properties
+
+backend_log.txt
+data/
+*.mv.db
+*.log

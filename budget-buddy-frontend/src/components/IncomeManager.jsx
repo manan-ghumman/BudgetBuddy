@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ChevronLeft, Plus, Trash2, DollarSign, Calendar } from 'lucide-react';
+import { ChevronLeft, Plus, Trash2, IndianRupee, Calendar } from 'lucide-react';
 import authService from '../services/authService';
 import incomeService from '../services/incomeService';
 
@@ -107,7 +107,7 @@ const IncomeManager = () => {
                             />
                         </div>
                         <div>
-                            <label className="y2k-label">Amount ($)</label>
+                            <label className="y2k-label">Amount (₹)</label>
                             <input 
                                 required 
                                 type="number" 
@@ -148,12 +148,12 @@ const IncomeManager = () => {
                                 justifyContent: 'center',
                                 alignItems: 'center'
                             }}>
-                                <DollarSign size={20} color="var(--lima-green)" />
+                                <IndianRupee size={20} color="var(--lima-green)" />
                             </div>
                             <div>
                                 <h3 style={{ margin: 0, fontSize: '1.15rem', fontWeight: '900' }}>{income.source}</h3>
                                 <p style={{ margin: 0, color: 'var(--dark-grey)', fontFamily: 'var(--font-mono)', fontSize: '0.8rem' }}>
-                                    {new Date(income.date).toLocaleDateString()} — <strong style={{color: 'var(--black)'}}>${income.amount.toFixed(2)}</strong>
+                                    {new Date(income.date).toLocaleDateString()} — <strong style={{color: 'var(--black)'}}>₹{income.amount.toFixed(2)}</strong>
                                 </p>
                             </div>
                         </div>

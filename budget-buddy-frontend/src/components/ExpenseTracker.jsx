@@ -118,6 +118,8 @@ const ExpenseTracker = () => {
             case 'Food': return 'var(--lima-green)';
             case 'Fun': return 'var(--hot-pink)';
             case 'Housing': return 'var(--electric-blue)';
+            case 'Transport': return 'var(--neon-orange)';
+            case 'Other': return 'var(--neon-purple)';
             default: return 'var(--light-grey)';
         }
     };
@@ -190,7 +192,7 @@ const ExpenseTracker = () => {
                             <input required type="text" className="y2k-input" placeholder="e.g. Cinema tickets" value={newName} onChange={e => setNewName(e.target.value)} />
                         </div>
                         <div>
-                            <label className="y2k-label">Amount ($)</label>
+                            <label className="y2k-label">Amount (₹)</label>
                             <input required type="number" step="0.01" className="y2k-input" placeholder="0.00" value={newAmount} onChange={e => setNewAmount(e.target.value)} />
                         </div>
                         <div>
@@ -265,7 +267,7 @@ const ExpenseTracker = () => {
                                                 {expense.category}
                                             </span>
                                         </td>
-                                        <td style={{ fontWeight: '900', fontSize: '1rem' }}>${expense.amount.toFixed(2)}</td>
+                                        <td style={{ fontWeight: '900', fontSize: '1rem' }}>₹{expense.amount.toFixed(2)}</td>
                                         <td>
                                             <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'flex-end' }}>
                                                 <button className="y2k-btn y2k-btn-secondary" onClick={() => startEditing(expense)} style={{ padding: '0.5rem', boxShadow: 'none' }}>

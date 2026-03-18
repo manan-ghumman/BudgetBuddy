@@ -1,14 +1,15 @@
 # Budget Buddy 💸
 
-A personal finance management application built with a modern "Y2K Retro-Future" aesthetic. Track your income, expenses, and budgets with ease and style.
+A personal finance management application built with a modern Retro-Future aesthetic. Track your income, expenses, and budgets with ease and style.
 
 ## 🚀 Features
 - **Stateless Authentication**: Secure JWT-based login and registration.
 - **Dashboard Hub**: High-level overview of balances, income vs. expense trends, and category breakdowns.
 - **Income Tracking**: Log multiple income sources.
 - **Expense Management**: Categorize spending and track transactions in real-time.
-- **Budgeting**: Set monthly limits and get visual warnings when approaching or exceeding them.
-- **Retro-Modern UI**: Vibrant neon accents, glassmorphism, and responsive design.
+- [x] **Budgeting**: Set monthly limits and get visual warnings when approaching or exceeding them.
+- [x] **Rupee Localization**: Native support for ₹ currency symbols and formatting.
+- [x] **High-Contrast UI**: Consistent neon category colors and vibrant design.
 
 ## 🛠️ Tech Stack
 ### Backend
@@ -16,7 +17,7 @@ A personal finance management application built with a modern "Y2K Retro-Future"
 - **Spring Boot 3**
 - **Spring Security (JWT)**
 - **Spring Data JPA**
-- **MySQL**
+- **PostgreSQL / MySQL**
 
 ### Frontend
 - **React 18**
@@ -29,8 +30,8 @@ A personal finance management application built with a modern "Y2K Retro-Future"
 
 ### Prerequisites
 - JDK 17 or higher
-- Node.js & npm
-- MySQL Server
+- Node.js & npm (v18+)
+- PostgreSQL (for production) or MySQL (local)
 
 ### Backend Setup
 1. Navigate to `budget-buddy-backend`.
@@ -50,6 +51,14 @@ A personal finance management application built with a modern "Y2K Retro-Future"
    ```bash
    npm run dev
    ```
+
+## 🚀 Deployment
+
+The project is pre-configured for **Railway** deployment.
+- **Backend**: Uses `${PORT}` and `${SPRING_DATASOURCE_URL}`.
+- **Frontend**: Uses `VITE_API_URL` for production API connectivity.
+
+See the [Deployment Plan](file:///C:/Users/manan/.gemini/antigravity/brain/a407ae02-65ee-4c39-a203-e590d7d34bff/deployment_plan.md) for more details.
 
 ## 📸 Preview
 *(Detailed screenshots can be added here)*

@@ -1,7 +1,6 @@
 package com.budgetbuddy.security;
 
 import io.jsonwebtoken.*;
-import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +22,16 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private int jwtExpirationMs;
 
+    @jakarta.annotation.PostConstruct
+    public void validateJwtSecret() {
+        if (jwtSecret == null || jwtSecret.trim().isEmpty()) {
+            throw new IllegalStateException("JWT secret (jwt.secret) must be provided in the environment and must not be empty.");
+        }
+        if (jwtSecret.length() < 32) {
+            throw new IllegalStateException("JWT secret (jwt.secret) must be at least 32 characters long to ensure strong security.");
+        }
+    }
+
     public String generateJwtToken(Authentication authentication) {
         UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
 
@@ -35,7 +44,8 @@ public class JwtUtils {
     }
 
     private Key key() {
-        // Use raw bytes from the secret string for better reliability with different secret formats.
+        // Use raw bytes from the secret string for better reliability with different
+        // secret formats.
         return Keys.hmacShaKeyFor(jwtSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
     }
 
@@ -51,9 +61,9 @@ public class JwtUtils {
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser()
-                .verifyWith((javax.crypto.SecretKey) key())
-                .build()
-                .parseSignedClaims(authToken);
+                    .verifyWith((javax.crypto.SecretKey) key())
+                    .build()
+                    .parseSignedClaims(authToken);
             return true;
         } catch (MalformedJwtException e) {
             logger.error("Invalid JWT token: {}", e.getMessage());
@@ -64,8 +74,7 @@ public class JwtUtils {
         } catch (IllegalArgumentException e) {
             logger.error("JWT claims string is empty: {}", e.getMessage());
         } catch (Exception e) {
-            logger.error("Unexpected error during JWT validation: {}", e.getMessage());
-            e.printStackTrace();
+            logger.error("Unexpected error during JWT validation", e);
         }
 
         return false;

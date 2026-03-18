@@ -58,7 +58,6 @@ The project is pre-configured for **Railway** deployment.
 - **Backend**: Uses `${PORT}` and `${SPRING_DATASOURCE_URL}`.
 - **Frontend**: Uses `VITE_API_URL` for production API connectivity.
 
-See the [Deployment Plan](file:///C:/Users/manan/.gemini/antigravity/brain/a407ae02-65ee-4c39-a203-e590d7d34bff/deployment_plan.md) for more details.
 
 ## 📸 Preview
 *(Detailed screenshots can be added here)*

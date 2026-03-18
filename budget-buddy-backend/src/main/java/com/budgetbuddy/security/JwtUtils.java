@@ -22,53 +22,43 @@ public class JwtUtils {
     @Value("${jwt.expiration}")
     private int jwtExpirationMs;
 
-    @jakarta.annotation.PostConstruct
-    public void validateJwtSecret() {
-        if (jwtSecret == null || jwtSecret.trim().isEmpty()) {
-            throw new IllegalStateException("JWT secret (jwt.secret) must be provided in the environment and must not be empty.");
-        }
-        if (jwtSecret.length() < 32) {
-            throw new IllegalStateException("JWT secret (jwt.secret) must be at least 32 characters long to ensure strong security.");
-        }
-    }
-
-    public String generateJwtToken(Authentication authentication) {
-        UserDetails userPrincipal = (UserDetails) authentication.getPrincipal();
-
-        return Jwts.builder()
+    public String generateJwtToken(Au
+        UserDetails userPrincipal = (
+        
+            rn Jwts.builder()
                 .subject((userPrincipal.getUsername()))
                 .issuedAt(new Date())
-                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .expiration(new Date((new Dat
                 .signWith(key())
-                .compact();
+         
     }
 
     private Key key() {
-        // Use raw bytes from the secret string for better reliability with different
-        // secret formats.
-        return Keys.hmacShaKeyFor(jwtSecret.getBytes(java.nio.charset.StandardCharsets.UTF_8));
-    }
+        // Use raw bytes from the secret string for better reliability with diff
 
-    public String getUserNameFromJwtToken(String token) {
-        return Jwts.parser()
-                .verifyWith((javax.crypto.SecretKey) key())
-                .build()
-                .parseSignedClaims(token)
-                .getPayload()
+        return Keys.hmacShaKe
+                
+                
+                g getUserNameFromJwtToken(String token) {
+                wts.parser()
+                .verifyWith
+     
+
+                .getPay
                 .getSubject();
-    }
+        
+        
+    p
 
-    public boolean validateJwtToken(String authToken) {
-        try {
             Jwts.parser()
-                    .verifyWith((javax.crypto.SecretKey) key())
+                    .verifyW
                     .build()
-                    .parseSignedClaims(authToken);
-            return true;
-        } catch (MalformedJwtException e) {
-            logger.error("Invalid JWT token: {}", e.getMessage());
-        } catch (ExpiredJwtException e) {
-            logger.error("JWT token is expired: {}", e.getMessage());
+                    .par
+                rn true;
+                (MalformedJwt
+                er.error("Inva
+     
+
         } catch (UnsupportedJwtException e) {
             logger.error("JWT token is unsupported: {}", e.getMessage());
         } catch (IllegalArgumentException e) {

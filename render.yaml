@@ -16,16 +16,16 @@ services:
         generateValue: true
       - key: ALLOWED_ORIGINS
         fromService:
-          type: static_site
+          type: web
           name: budget-buddy-frontend
           property: url
 
   # Frontend: React Static Site
-  - type: static_site
+  - type: web
     name: budget-buddy-frontend
-    runtime: node
+    runtime: static
     buildCommand: cd budget-buddy-frontend && npm install && npm run build
-    publishPath: budget-buddy-frontend/dist
+    staticPublishPath: budget-buddy-frontend/dist
     envVars:
       - key: VITE_API_URL
         fromService:

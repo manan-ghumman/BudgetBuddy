@@ -10,10 +10,6 @@ import org.springframework.context.annotation.Primary;
 import javax.sql.DataSource;
 import java.net.URI;
 
-/**
- * Automatically detects Railway's DATABASE_URL and configures the DataSource.
- * Falls back to application.properties defaults (H2) if no DATABASE_URL is found.
- */
 @Configuration
 public class DatabaseConfig {
 
@@ -27,7 +23,6 @@ public class DatabaseConfig {
         if (databaseUrl != null && !databaseUrl.isEmpty()) {
             logger.info("DATABASE_URL detected — configuring PostgreSQL DataSource.");
             try {
-                // Railway format: postgresql://user:password@host:port/dbname
                 URI uri = new URI(databaseUrl);
 
                 String jdbcUrl = "jdbc:postgresql://" + uri.getHost() + ":" + uri.getPort() + uri.getPath();

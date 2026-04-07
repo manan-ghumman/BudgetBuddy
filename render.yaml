@@ -1,0 +1,40 @@
+services:
+  # Backend: Spring Boot Web Service
+  - type: web
+    name: budget-buddy-backend
+    runtime: java
+    buildCommand: cd budget-buddy-backend && ./mvnw clean install -DskipTests
+    startCommand: java -jar budget-buddy-backend/target/budget-buddy-backend-0.0.1-SNAPSHOT.jar
+    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: budget-buddy-db
+          property: connectionString
+      - key: PORT
+        value: 8080
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ALLOWED_ORIGINS
+        fromService:
+          type: static_site
+          name: budget-buddy-frontend
+          property: url
+
+  # Frontend: React Static Site
+  - type: static_site
+    name: budget-buddy-frontend
+    runtime: node
+    buildCommand: cd budget-buddy-frontend && npm install && npm run build
+    publishPath: budget-buddy-frontend/dist
+    envVars:
+      - key: VITE_API_URL
+        fromService:
+          type: web
+          name: budget-buddy-backend
+          property: url
+        suffix: /api
+
+# Database: PostgreSQL
+databases:
+  - name: budget-buddy-db
+    plan: free

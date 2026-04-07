@@ -2,9 +2,9 @@ services:
   # Backend: Spring Boot Web Service
   - type: web
     name: budget-buddy-backend
-    runtime: java
-    buildCommand: cd budget-buddy-backend && ./mvnw clean install -DskipTests
-    startCommand: java -jar budget-buddy-backend/target/budget-buddy-backend-0.0.1-SNAPSHOT.jar
+    runtime: docker
+    dockerContext: budget-buddy-backend
+    dockerfilePath: budget-buddy-backend/Dockerfile
     envVars:
       - key: DATABASE_URL
         fromDatabase:
@@ -18,7 +18,8 @@ services:
         fromService:
           type: web
           name: budget-buddy-frontend
-          property: url
+          # Access the frontend's auto-generated external URL
+          envVarKey: RENDER_EXTERNAL_URL
 
   # Frontend: React Static Site
   - type: web
@@ -31,7 +32,8 @@ services:
         fromService:
           type: web
           name: budget-buddy-backend
-          property: url
+          # Access the backend's auto-generated external URL
+          envVarKey: RENDER_EXTERNAL_URL
         suffix: /api
 
 # Database: PostgreSQL
